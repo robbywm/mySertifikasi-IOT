@@ -23,8 +23,8 @@
 /* Read more: https://bit.ly/BlynkInject */
 //#define BLYNK_TEMPLATE_ID           "TMPxxxxxx"
 //#define BLYNK_TEMPLATE_NAME         "Device"
-#define BLYNK_TEMPLATE_ID "TMPL6CXLGcRjg"
-#define BLYNK_TEMPLATE_NAME "Wemos D1"
+#define BLYNK_TEMPLATE_ID "SESUAIKAN"
+#define BLYNK_TEMPLATE_NAME "SESUAIKAN"
 
 #define BLYNK_FIRMWARE_VERSION        "0.1.3"
 

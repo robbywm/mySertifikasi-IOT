@@ -4,8 +4,8 @@
   Info lebih lanjut: https://www.blynk.io
  *************************************************************/
 
-#define BLYNK_TEMPLATE_ID "xxxxxxxxxxxxxxxxxxx"
-#define BLYNK_TEMPLATE_NAME "xxxxxxxxx"
+#define BLYNK_TEMPLATE_ID "SESUAIKAN"
+#define BLYNK_TEMPLATE_NAME "SESUAIKAN"
 
 #define BLYNK_FIRMWARE_VERSION        "0.1.3"
 #define BLYNK_PRINT Serial
