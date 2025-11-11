@@ -57,6 +57,7 @@ void setup()
 
   // Set interval pembacaan sensor
   timer.setInterval(5000L, sensor_dht11);
+  timer.setInterval(1000L, analogInput);
 }
 
 void loop() {
