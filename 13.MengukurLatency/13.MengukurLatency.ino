@@ -1,16 +1,16 @@
 #define BLYNK_PRINT Serial
 
 /* Fill-in information from Blynk Device Info here */
-#define BLYNK_TEMPLATE_ID "TMPL6aEF6ajcv"
-#define BLYNK_TEMPLATE_NAME "Wemos D1"
-#define BLYNK_AUTH_TOKEN "g7ZNLH50h8pRVK7j9kFEDPQ778CUvS71"
+#define BLYNK_TEMPLATE_ID "SESUAIKAN"
+#define BLYNK_TEMPLATE_NAME "SESUAIKAN"
+#define BLYNK_AUTH_TOKEN "SESUAIKAN"
 
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
 
 // Kredensial WiFi dan Blynk
-char ssid[] = "RR2";
-char pass[] = "kivandra";
+char ssid[] = "SESUAIKAN";
+char pass[] = "SESUAIKAN";
 
 BlynkTimer timer; // Object Timer agar tidak menggunakan delay()
 
