@@ -1,35 +1,52 @@
-// Definisi Pin sesuai routing KasgarIoT R1
-int pinMerah = D7;
-int pinBiru  = D6;
-int pinHijau = D8;
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BMP280.h>
+
+Adafruit_BMP280 bmp; 
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Pengujian RGB LED Dimulai...");
-  pinMode(pinMerah, OUTPUT);
-  pinMode(pinBiru, OUTPUT);
-  pinMode(pinHijau, OUTPUT);
+  Serial.println(F("Pengujian Sensor BMP280 Dimulai..."));
+
+  if (!bmp.begin(0x76)) {
+    Serial.println(F("Gagal menemukan sensor BMP280!"));
+    Serial.println(F("Periksa pemasangan modul pada port I2C."));
+    while (1); 
+  }
+
+  Serial.println(F("Sensor BMP280 Berhasil Diinisialisasi!"));
+
+  // Pengaturan sampling standar untuk hasil yang stabil
+  bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     
+                  Adafruit_BMP280::SAMPLING_X2,     
+                  Adafruit_BMP280::SAMPLING_X16,    
+                  Adafruit_BMP280::FILTER_X16,      
+                  Adafruit_BMP280::STANDBY_MS_500); 
 }
 
 void loop() {
-  // 1. Nyalakan warna Merah saja
-  digitalWrite(pinMerah, HIGH);
-  digitalWrite(pinBiru, LOW);
-  digitalWrite(pinHijau, LOW);
-  Serial.println("Warna RGB: MERAH");
-  delay(1000);
+  // 1. Membaca Suhu dalam derajat Celsius (*C)
+  float suhu = bmp.readTemperature();
+  
+  // 2. Membaca Tekanan Udara (Pascal dibagi 100 menjadi hPa)
+  float tekanan = bmp.readPressure() / 100.0F;
 
-  // 2. Nyalakan warna Hijau saja 
-  digitalWrite(pinMerah, LOW);
-  digitalWrite(pinBiru, LOW);
-  digitalWrite(pinHijau, HIGH);
-  Serial.println("Warna RGB: HIJAU");
-  delay(1000);
+  // 3. Membaca Perkiraan Ketinggian (Meter)
+  // 1013.25 adalah tekanan udara standar di permukaan laut (hPa)
+  float ketinggian = bmp.readAltitude(1013.25);
 
-  // 3. Nyalakan warna Biru saja 
-  digitalWrite(pinMerah, LOW);
-  digitalWrite(pinBiru, HIGH);
-  digitalWrite(pinHijau, LOW);
-  Serial.println("Warna RGB: BIRU");
-  delay(1000);
+  // Menampilkan hasil pembacaan ke Serial Monitor
+  Serial.print(F("Suhu: "));
+  Serial.print(suhu);
+  Serial.print(F(" *C \t| "));
+  
+  Serial.print(F("Tekanan: "));
+  Serial.print(tekanan);
+  Serial.print(F(" hPa \t| "));
+  
+  Serial.print(F("Ketinggian: "));
+  Serial.print(ketinggian);
+  Serial.println(F(" m"));
+
+  delay(2000);
 }

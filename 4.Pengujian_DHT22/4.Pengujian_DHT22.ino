@@ -1,15 +1,30 @@
-int potPin = A0;
+#include "DHT.h"
+#define DHTPIN D5       // Pin D5 pada Wemos D1 R2
+#define DHTTYPE DHT22   // Tipe sensor DHT22
+
+DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Pengujian Potensiometer Dimulai...");
+  Serial.println("Pengujian Sensor DHT22 Dimulai...");
+  dht.begin();
 }
 
 void loop() {
-  int nilaiPot = analogRead(potPin);
+  delay(2000);
   
-  Serial.print("Nilai Potensiometer: ");
-  Serial.println(nilaiPot);
-  
-  delay(500);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  // Validasi apakah pembacaan berhasil
+  if (isnan(h) || isnan(t)) {
+    Serial.println("Gagal membaca dari sensor DHT!");
+    return;
+  }
+  Serial.print("Kelembapan: ");
+  Serial.print(h);
+  Serial.print(" %\t");
+  Serial.print("Suhu: ");
+  Serial.print(t);
+  Serial.println(" *C");
 }

@@ -1,16 +1,14 @@
-int btnPin = D3;
-
+int ledPin = D4;
 void setup() {
   Serial.begin(9600);
-  Serial.println("Pengujian User Button Dimulai...");
-  pinMode(btnPin, INPUT_PULLUP);
+  Serial.println("Pengujian LED D4 Kasgar IoTShield Dimulai...");
+  pinMode(ledPin, OUTPUT);
 }
-
 void loop() {
-  int statusBtn = digitalRead(btnPin);
-
-  Serial.print("Status User Button (D3): ");
-  Serial.println(statusBtn); // Akan bernilai 0 jika ditekan, 1 jika dilepas
-
-  delay(500);
+  digitalWrite(ledPin, LOW); 
+  Serial.println("LED Menyala");
+  delay(1000);
+  digitalWrite(ledPin, HIGH);
+  Serial.println("LED Padam");
+  delay(1000);
 }
