@@ -11,16 +11,15 @@ const char* password = "KATA_SANDI_HOTSPOT_ANDA";
 // Catatan: LED D4 menggunakan logika Active LOW
 #define PIN_LED D4
 
-// ... [Bagian atas kode kredensial dan library tetap sama] ...
-
 void setup() {
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
 
-  // Firmware V2: Matikan LED saat setup awal
-  // Menggunakan HIGH karena sirkuit Active LOW
-  digitalWrite(PIN_LED, HIGH); 
+  // Firmware V1: Menyalakan LED statis sebagai tanda program awal
+  // Menggunakan LOW karena sirkuit Active LOW
+  digitalWrite(PIN_LED, LOW); 
 
+  // Koneksi ke Jaringan Wi-Fi
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
@@ -28,18 +27,15 @@ void setup() {
     ESP.restart();
   }
 
+  // Konfigurasi Identitas OTA di Jaringan
   ArduinoOTA.setHostname("mySertifikasi-OTA");
+
+  // Memulai Layanan OTA
   ArduinoOTA.begin();
 }
 
 void loop() {
-  ArduinoOTA.handle(); // Tetap wajib ada
-
-  // --- Modifikasi Logika Indikator OTA (Firmware V2) ---
-  // Membuat LED D4 berkedip sebagai bukti OTA berhasil
-  digitalWrite(PIN_LED, LOW);  // LED Menyala
-  delay(500);
-  digitalWrite(PIN_LED, HIGH); // LED Padam
-  delay(500);
-  // ---------------------------------------------------
+  // Mendengarkan permintaan OTA dari jaringan
+  ArduinoOTA.handle(); 
 }
+

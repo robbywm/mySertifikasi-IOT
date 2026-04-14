@@ -1,4 +1,4 @@
-// --- KREDENSIAL BLYNK ---
+/ --- KREDENSIAL BLYNK ---
 #define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
 #define BLYNK_TEMPLATE_NAME "MySertifikasi"
 #define BLYNK_AUTH_TOKEN "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -10,26 +10,29 @@
 char ssid[] = "NAMA_WIFI";
 char pass[] = "SANDI_WIFI";
 
-#define PIN_ANALOG A0 // Potensiometer pada KasgarIoT Shield
+#define PIN_TOMBOL D3 // User Button pada KasgarIoT (Active LOW)
 
 BlynkTimer timer;
 
-void kirimDataAnalog() {
-  int nilaiADC = analogRead(PIN_ANALOG); // Rentang nilai 0 - 1023
+void kirimStatusTombol() {
+  // Karena Active LOW, tombol ditekan = 0 (LOW), dilepas = 1 (HIGH). 
+  // Kita balik logikanya dengan (!) agar di Dashboard bernilai 1 saat ditekan.
+  int status = !digitalRead(PIN_TOMBOL); 
   
-  Blynk.virtualWrite(V5, nilaiADC);
-  Serial.print("Nilai Potensiometer (ADC): ");
-  Serial.println(nilaiADC);
+  Blynk.virtualWrite(V4, status);
+  Serial.print("Status Tombol dikirim: ");
+  Serial.println(status == 1 ? "DITEKAN" : "DILEPAS");
 }
 
 void setup() {
   Serial.begin(9600);
-  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  pinMode(PIN_TOMBOL, INPUT_PULLUP);
   
-  timer.setInterval(1000L, kirimDataAnalog); // Kirim data setiap 1 detik
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  timer.setInterval(500L, kirimStatusTombol); // Alokasi timer interval
 }
 
 void loop() {
   Blynk.run();
-  timer.run();
+  timer.run(); // Eksekusi timer
 }
