@@ -1,4 +1,4 @@
-/ --- KREDENSIAL BLYNK ---
+// --- KREDENSIAL BLYNK ---
 #define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
 #define BLYNK_TEMPLATE_NAME "MySertifikasi"
 #define BLYNK_AUTH_TOKEN "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
