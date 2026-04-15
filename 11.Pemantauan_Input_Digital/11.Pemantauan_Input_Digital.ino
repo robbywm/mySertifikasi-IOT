@@ -10,7 +10,7 @@
 char ssid[] = "NAMA_WIFI";
 char pass[] = "SANDI_WIFI";
 
-#define PIN_TOMBOL 0 // User Button pada KasgarIoT (Active LOW)
+#define PIN_TOMBOL D3 // User Button pada KasgarIoT (Active LOW)
 
 BlynkTimer timer;
 
