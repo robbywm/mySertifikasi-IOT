@@ -1,10 +1,10 @@
-// --- Tab Utama: Edgent_ESP8266 (Firmware Versi 1.1 - PATCH TERKALIBRASI) ---
 
+// --- Tab Utama: Edgent_ESP8266 (Firmware Versi 1.0) ---
 #define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
 #define BLYNK_TEMPLATE_NAME "mySertifikasi"
 
-// NAIKKAN VERSI FIRMWARE MENJADI 0.1.1!
-#define BLYNK_FIRMWARE_VERSION        "0.1.1"
+// VERSI AWAL: 0.1.0 (Belum Dikalibrasi Spesifik)
+#define BLYNK_FIRMWARE_VERSION        "0.1.0"
 #define BLYNK_PRINT Serial
 #define APP_DEBUG
 #define USE_KASGARIOT_SHIELD
@@ -12,12 +12,14 @@
 #include "BlynkEdgent.h"
 #include <DHT.h>
 
+// Definisi DHT22 pada KasgarIoT Shield (Pin D5)
 #define DHTPIN D5
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 
 BlynkTimer timer;
 
+// Fungsi Pembacaan Sensor Suhu (Virtual Pin V0)
 void kirimDataSuhu() {
   float suhuStandar = dht.readTemperature();
   
@@ -26,13 +28,9 @@ void kirimDataSuhu() {
     return;
   }
   
-  // [SIMULASI PATCH] Menambahkan offset kalibrasi sebesar -2.5
-  float offsetKalibrasi = -2.5; 
-  float suhuTerkalibrasi = suhuStandar + offsetKalibrasi;
-  
-  Blynk.virtualWrite(V0, suhuTerkalibrasi);
-  Serial.print("Versi 1.1 (Patch Terkalibrasi). Suhu Aktual: ");
-  Serial.print(suhuTerkalibrasi);
+  Blynk.virtualWrite(V0, suhuStandar);
+  Serial.print("Versi 1.0 Berjalan. Suhu Standar: ");
+  Serial.print(suhuStandar);
   Serial.println(" *C");
 }
 
@@ -44,6 +42,7 @@ void setup()
   dht.begin();
   BlynkEdgent.begin();
   
+  // Timer mengirim data suhu setiap 2 detik
   timer.setInterval(2000L, kirimDataSuhu);
 }
 
@@ -51,3 +50,4 @@ void loop() {
   BlynkEdgent.run();
   timer.run();
 }
+
