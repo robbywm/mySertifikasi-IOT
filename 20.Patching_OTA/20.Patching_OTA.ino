@@ -1,98 +1,53 @@
-#define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
-#define BLYNK_TEMPLATE_NAME "MySertifikasi"
+// --- Tab Utama: Edgent_ESP8266 (Firmware Versi 1.1 - PATCH TERKALIBRASI) ---
 
-// VERSI PEMBARUAN MAYOR (INTEGRASI SISTEM)
-#define BLYNK_FIRMWARE_VERSION        "0.2.0"
+#define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
+#define BLYNK_TEMPLATE_NAME "mySertifikasi"
+
+// NAIKKAN VERSI FIRMWARE MENJADI 0.1.1!
+#define BLYNK_FIRMWARE_VERSION        "0.1.1"
 #define BLYNK_PRINT Serial
 #define APP_DEBUG
 #define USE_KASGARIOT_SHIELD
 
 #include "BlynkEdgent.h"
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BMP280.h>
 #include <DHT.h>
 
-// --- Definisi Pin KasgarIoT Shield R1 ---
-#define PIN_LED D4       
-#define PIN_TOMBOL D3   
-#define PIN_ANALOG A0    
-#define DHTPIN D5       
+#define DHTPIN D5
 #define DHTTYPE DHT22
-
 DHT dht(DHTPIN, DHTTYPE);
-Adafruit_BMP280 bmp;
+
 BlynkTimer timer;
 
-int statusTombolTerakhir = HIGH; 
-
-BLYNK_WRITE(V3) {
-  int statusSwitch = param.asInt();
-  // Inversi (!) karena rangkaian D4 bersifat Active LOW
-  digitalWrite(PIN_LED, !statusSwitch); 
-}
-
-// 1. Fungsi Cepat: Mengecek input Tombol (Dieksekusi tiap 100 milidetik)
-void cekTombol() {
-  int statusTombolSekarang = digitalRead(PIN_TOMBOL);
+void kirimDataSuhu() {
+  float suhuStandar = dht.readTemperature();
   
-  if (statusTombolSekarang != statusTombolTerakhir) {
-    delay(50); 
-    int statusValid = digitalRead(PIN_TOMBOL);
-    
-    if (statusValid == statusTombolSekarang) {
-      int nilaiKirim = !statusValid; 
-      Blynk.virtualWrite(V4, nilaiKirim);
-      statusTombolTerakhir = statusValid; 
-      
-      if(nilaiKirim == 1){
-        Serial.println("Tombol Fisik Ditekan!");
-      }
-    }
-  }
-}
-
-// 2. Fungsi Lambat: Pengiriman Data Sensor (Dieksekusi tiap 2 Detik)
-void kirimDataSensor() {
-  int nilaiPot = analogRead(PIN_ANALOG);
-  Blynk.virtualWrite(V5, nilaiPot);
-
-  // Baca DHT22 (V0 Suhu, V1 Kelembapan)
-  float kelembapan = dht.readHumidity();
-  float suhu = dht.readTemperature();
-  if (!isnan(kelembapan) && !isnan(suhu)) {
-    Blynk.virtualWrite(V0, suhu);
-    Blynk.virtualWrite(V1, kelembapan);
-  }
-
-  // Baca BMP280 (V2 Tekanan Udara)
-  float tekanan = bmp.readPressure() / 100.0F; 
-  if (tekanan > 0) {
-    Blynk.virtualWrite(V2, tekanan);
+  if (isnan(suhuStandar)) {
+    Serial.println("Gagal membaca dari sensor DHT!");
+    return;
   }
   
-  Serial.println("Data Sensor (DHT, BMP, Potensiometer) Berhasil Dikirim.");
+  // [SIMULASI PATCH] Menambahkan offset kalibrasi sebesar -2.5
+  float offsetKalibrasi = -2.5; 
+  float suhuTerkalibrasi = suhuStandar + offsetKalibrasi;
+  
+  Blynk.virtualWrite(V0, suhuTerkalibrasi);
+  Serial.print("Versi 1.1 (Patch Terkalibrasi). Suhu Aktual: ");
+  Serial.print(suhuTerkalibrasi);
+  Serial.println(" *C");
 }
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   delay(100);
-  pinMode(PIN_LED, OUTPUT);
-  digitalWrite(PIN_LED, HIGH);
-  pinMode(PIN_TOMBOL, INPUT_PULLUP);
-
+  
   dht.begin();
-  if (!bmp.begin(0x76)) {
-    Serial.println("PERINGATAN: Gagal menemukan sensor BMP280!");
-  }
-
   BlynkEdgent.begin();
-  timer.setInterval(100L, cekTombol);
-  timer.setInterval(2000L, kirimDataSensor);
+  
+  timer.setInterval(2000L, kirimDataSuhu);
 }
 
 void loop() {
   BlynkEdgent.run();
   timer.run();
 }
-
