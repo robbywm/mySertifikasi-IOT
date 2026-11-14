@@ -15,8 +15,11 @@ char pass[] = "SANDI_WIFI";
 Adafruit_BMP280 bmp; // Menggunakan bus I2C bawaan (D1, D2)
 
 BlynkTimer timer;
+bool bmpSiap = false;
 
 void kirimDataBMP() {
+  if (!bmpSiap) return; // Sensor tidak terdeteksi, jangan kirim data palsu
+
   float tekanan = bmp.readPressure() / 100.0F;
 
   Serial.print("Tekanan Udara: "); Serial.print(tekanan); Serial.println(" hPa");
@@ -27,8 +30,10 @@ void kirimDataBMP() {
 void setup() {
   Serial.begin(9600);
   
-  if (!bmp.begin(0x76)) {
-    Serial.println("Kesalahan Fatal: Sensor BMP280 tidak terdeteksi pada alamat 0x76");
+  // Alamat I2C BMP280 adalah 0x76 atau 0x77, tergantung pin SDO pada modul
+  bmpSiap = bmp.begin(0x76) || bmp.begin(0x77);
+  if (!bmpSiap) {
+    Serial.println("Peringatan: Sensor BMP280 tidak terdeteksi (0x76/0x77). Data V2 tidak dikirim.");
   }
 
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);

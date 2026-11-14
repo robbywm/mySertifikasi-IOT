@@ -24,7 +24,8 @@ DHT dht(DHTPIN, DHTTYPE);
 Adafruit_BMP280 bmp;
 BlynkTimer timer;
 
-int statusTombolTerakhir = HIGH; 
+int statusTombolTerakhir = HIGH;
+bool bmpSiap = false;
 
 BLYNK_WRITE(V3) {
   int statusSwitch = param.asInt();
@@ -66,9 +67,8 @@ void kirimDataSensor() {
   }
 
   // Baca BMP280 (V2 Tekanan Udara)
-  float tekanan = bmp.readPressure() / 100.0F; 
-  if (tekanan > 0) {
-    Blynk.virtualWrite(V2, tekanan);
+  if (bmpSiap) {
+    Blynk.virtualWrite(V2, bmp.readPressure() / 100.0F);
   }
   
   Serial.println("Data Sensor (DHT, BMP, Potensiometer) Berhasil Dikirim.");
@@ -82,7 +82,9 @@ void setup() {
   pinMode(PIN_TOMBOL, INPUT_PULLUP);
 
   dht.begin();
-  if (!bmp.begin(0x76)) {
+  // Alamat I2C BMP280 adalah 0x76 atau 0x77, tergantung pin SDO pada modul
+  bmpSiap = bmp.begin(0x76) || bmp.begin(0x77);
+  if (!bmpSiap) {
     Serial.println("PERINGATAN: Gagal menemukan sensor BMP280!");
   }
 

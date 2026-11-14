@@ -7,11 +7,14 @@
 const char* ssid = "NAMA_WIFI_HOTSPOT_ANDA";
 const char* password = "KATA_SANDI_HOTSPOT_ANDA";
 
+// Sandi OTA: harus sama dengan sandi pada Firmware V1 (program 16)
+const char* sandiOTA = "GANTI_SANDI_OTA";
+
 // Definisi Pin Status LED pada KasgarIoT
 // Catatan: LED D4 menggunakan logika Active LOW
 #define PIN_LED D4
 
-// ... [Bagian atas kode kredensial dan library tetap sama] ...
+unsigned long waktuKedipTerakhir = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -19,7 +22,7 @@ void setup() {
 
   // Firmware V2: Matikan LED saat setup awal
   // Menggunakan HIGH karena sirkuit Active LOW
-  digitalWrite(PIN_LED, HIGH); 
+  digitalWrite(PIN_LED, HIGH);
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -28,7 +31,9 @@ void setup() {
     ESP.restart();
   }
 
+  // Layanan OTA tetap wajib ada, agar perangkat masih bisa diperbarui lagi
   ArduinoOTA.setHostname("mySertifikasi-OTA");
+  ArduinoOTA.setPassword(sandiOTA);
   ArduinoOTA.begin();
 }
 
@@ -36,10 +41,12 @@ void loop() {
   ArduinoOTA.handle(); // Tetap wajib ada
 
   // --- Modifikasi Logika Indikator OTA (Firmware V2) ---
-  // Membuat LED D4 berkedip sebagai bukti OTA berhasil
-  digitalWrite(PIN_LED, LOW);  // LED Menyala
-  delay(500);
-  digitalWrite(PIN_LED, HIGH); // LED Padam
-  delay(500);
+  // LED D4 berkedip tiap 500 ms sebagai bukti OTA berhasil.
+  // Memakai millis() dan bukan delay(), supaya ArduinoOTA.handle()
+  // tetap terpanggil terus dan permintaan OTA berikutnya tidak terlewat.
+  if (millis() - waktuKedipTerakhir >= 500) {
+    waktuKedipTerakhir = millis();
+    digitalWrite(PIN_LED, !digitalRead(PIN_LED));
+  }
   // ---------------------------------------------------
 }

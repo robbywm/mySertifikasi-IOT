@@ -17,7 +17,16 @@ void setup() {
   // Menyimpan perubahan secara permanen ke memori Flash
   EEPROM.commit(); 
   
-  Serial.println("Proses selesai. EEPROM bersih dari jejak konfigurasi lama.");
+  Serial.println("EEPROM bersih dari jejak konfigurasi lama.");
+
+  // Bila program lama memakai WiFi.persistent(true), SSID dan password disimpan
+  // SDK di sektor konfigurasi tersendiri (di luar EEPROM), jadi dihapus terpisah
+  if (ESP.eraseConfig()) {
+    Serial.println("Kredensial WiFi yang disimpan SDK juga sudah dihapus.");
+  } else {
+    Serial.println("Peringatan: Kredensial WiFi SDK gagal dihapus.");
+  }
+  Serial.println("Proses selesai.");
 }
 
 void loop() {

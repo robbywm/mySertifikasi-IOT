@@ -2,7 +2,7 @@
 
 // Ganti dengan Kredensial Template Anda dari Blynk Web Console
 #define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
-#define BLYNK_TEMPLATE_NAME "mySertifikasi"
+#define BLYNK_TEMPLATE_NAME "MySertifikasi"
 
 #define BLYNK_FIRMWARE_VERSION        "0.1.0"
 #define BLYNK_PRINT Serial

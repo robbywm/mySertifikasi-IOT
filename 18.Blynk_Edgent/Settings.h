@@ -36,10 +36,10 @@
   #define BOARD_LED_BRIGHTNESS        64
 
 #elif defined(USE_KASGARIOT_SHIELD)
-  #define BOARD_BUTTON_PIN            0  
+  #define BOARD_BUTTON_PIN            0     // GPIO0  = D3, tombol USER
   #define BOARD_BUTTON_ACTIVE_LOW     true
-  #define BOARD_LED_PIN               12
-  #define BOARD_LED_INVERSE           false 
+  #define BOARD_LED_PIN               12    // GPIO12 = D6, LED RGB biru
+  #define BOARD_LED_INVERSE           false // LED RGB bersifat Active HIGH
   #define BOARD_LED_BRIGHTNESS        255
 
 #else

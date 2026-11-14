@@ -1,7 +1,7 @@
-// --- Tab Utama: Edgent_ESP8266 (Firmware Versi 1.1 - PATCH TERKALIBRASI) ---
+// --- Tab Utama: Edgent_ESP8266 (Firmware Versi 0.1.1 - PATCH TERKALIBRASI) ---
 
 #define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
-#define BLYNK_TEMPLATE_NAME "mySertifikasi"
+#define BLYNK_TEMPLATE_NAME "MySertifikasi"
 
 // NAIKKAN VERSI FIRMWARE MENJADI 0.1.1!
 #define BLYNK_FIRMWARE_VERSION        "0.1.1"
@@ -31,7 +31,7 @@ void kirimDataSuhu() {
   float suhuTerkalibrasi = suhuStandar + offsetKalibrasi;
   
   Blynk.virtualWrite(V0, suhuTerkalibrasi);
-  Serial.print("Versi 1.1 (Patch Terkalibrasi). Suhu Aktual: ");
+  Serial.print("Versi 0.1.1 (Patch Terkalibrasi). Suhu Aktual: ");
   Serial.print(suhuTerkalibrasi);
   Serial.println(" *C");
 }

@@ -1,7 +1,7 @@
 
-// --- Tab Utama: Edgent_ESP8266 (Firmware Versi 1.0) ---
+// --- Tab Utama: Edgent_ESP8266 (Firmware Versi 0.1.0) ---
 #define BLYNK_TEMPLATE_ID "TMPLxxxxxx"
-#define BLYNK_TEMPLATE_NAME "mySertifikasi"
+#define BLYNK_TEMPLATE_NAME "MySertifikasi"
 
 // VERSI AWAL: 0.1.0 (Belum Dikalibrasi Spesifik)
 #define BLYNK_FIRMWARE_VERSION        "0.1.0"
@@ -29,7 +29,7 @@ void kirimDataSuhu() {
   }
   
   Blynk.virtualWrite(V0, suhuStandar);
-  Serial.print("Versi 1.0 Berjalan. Suhu Standar: ");
+  Serial.print("Versi 0.1.0 Berjalan. Suhu Standar: ");
   Serial.print(suhuStandar);
   Serial.println(" *C");
 }

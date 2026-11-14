@@ -8,7 +8,8 @@ void setup() {
   Serial.begin(9600);
   Serial.println(F("Pengujian Sensor BMP280 Dimulai..."));
 
-  if (!bmp.begin(0x76)) {
+  // Alamat I2C BMP280 adalah 0x76 atau 0x77, tergantung pin SDO pada modul
+  if (!bmp.begin(0x76) && !bmp.begin(0x77)) {
     Serial.println(F("Gagal menemukan sensor BMP280!"));
     Serial.println(F("Periksa pemasangan modul pada port I2C."));
     while (1); 
