@@ -169,7 +169,7 @@ Perangkat: Wemos D1 R2 (CH340) dengan KasgarIoT Shield R1, ponsel Android lewat 
 | Program 8 sampai 14 (Blynk) | Online, ping 12 sampai 52 ms. Kendali dua arah pada program 10 terbukti |
 | Program 15 | Konfigurasi terhapus |
 | Program 16 dan 17 | OTA lokal berhasil dalam sekitar 23 detik. Password salah ditolak |
-| Program 22 (Supabase Storage) | OTA 1.0.0 ke 1.0.1 berhasil dalam kurang dari dua menit sejak `version.txt` diunggah. Firmware di bucket tidak memuat password Wi-Fi: firmware USB memakai `WiFi.persistent(true)`, firmware bucket memakai `WiFi.begin()`. Uji mundur versi belum dilakukan |
+| Program 22 (Supabase Storage) | OTA 1.0.0 ke 1.0.1 berhasil dalam kurang dari dua menit sejak `version.txt` diunggah. Firmware di bucket tidak memuat password Wi-Fi: firmware USB memakai `WiFi.persistent(true)`, firmware bucket memakai `WiFi.begin()`. Uji mundur versi berhasil: 1.0.1 kembali ke 1.0.0 dalam kurang dari dua menit setelah berkas lama dihapus dan berkas 1.0.0 diunggah. Dashboard Supabase tidak menimpa berkas bernama sama dan membuat `firmware (1).bin`, sehingga berkas lama harus dihapus dulu |
 | Program 22 (versi lama, GitHub Releases) | OTA 1.0.0 ke 1.0.1 dan uji mundur versi berhasil. Program ini kemudian diganti ke Supabase Storage |
 | Program 18 | Provisioning lewat aplikasi Blynk berhasil, status `RUNNING`, ping 12 ms |
 | Program 19 dan 20 | Versi 0.1.0 berjalan. Patch 0.1.1 terkirim lewat Blynk.Air, status Finished, serial menampilkan `Versi 0.1.1 (Patch Terkalibrasi)` |
